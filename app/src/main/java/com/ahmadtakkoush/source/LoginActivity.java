@@ -50,7 +50,6 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
         mGoogleSignInClient = GoogleSignIn.getClient(this,googleSignInOptions);
 
         findViewById(R.id.sign_in_button).setOnClickListener(this);
-        //findViewById(R.id.btn_logout).setOnClickListener(this);
 
 
 
@@ -102,8 +101,7 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
                             Log.d("TAG", "signInWithCredential:success");
                             FirebaseUser user = mAuth.getCurrentUser();
                             updateUI(user);
-                            //Intent intent = new Intent(LoginActivity.this, HomePage.class);
-                            //startActivity(intent);
+
                         } else {
                             // If sign in fails, display a message to the user.
                             Log.w("TAG", "signInWithCredential:failure", task.getException());
@@ -120,6 +118,9 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
     if(user!=null)
     {
         if(user != null){
+            Intent intent = new Intent(LoginActivity.this, HomePage.class);
+            startActivity(intent);
+
             //Do your Stuff
             Toast.makeText(this,"Hello ${user.displayName}",Toast.LENGTH_LONG).show();
         }
@@ -127,13 +128,17 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
     }
     else
     {
-        //
+       // code
+
     }
     }
-    void signOut()
-    {
-        FirebaseAuth.getInstance().signOut();
-        mGoogleSignInClient.signOut().addOnCompleteListener(this, task -> updateUI(null));
+    private void signOut() {
+        // Firebase sign out
+        mAuth.signOut();
+
+        // Google sign out
+        mGoogleSignInClient.signOut().addOnCompleteListener(this,
+                task -> updateUI(null));
     }
 
     @Override
@@ -150,4 +155,5 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
             // break;
         }
     }
+
 }
